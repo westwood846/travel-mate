@@ -5,11 +5,12 @@ import {
   Polyline,
   Tooltip,
 } from "react-leaflet";
-import { type LatLngExpression } from "leaflet";
 
 import { useEffect, useRef } from "react";
 import L from "leaflet";
 import "leaflet-arrowheads";
+import type { Location } from "./locations";
+import { connKey, type Connection } from "./connections";
 
 const ArrowPolyline = ({ positions }: { positions: L.LatLngExpression[] }) => {
   const ref = useRef<L.Polyline | null>(null);
@@ -33,18 +34,12 @@ const ArrowPolyline = ({ positions }: { positions: L.LatLngExpression[] }) => {
     />
   );
 };
-
-type Pin = {
-  id: string;
-  position: LatLngExpression;
-  label: string;
-};
-
 interface MapViewProps {
-  pins: Pin[];
+  locations: Location[];
+  connections: Connection[];
 }
 
-export const MapView: React.FC<MapViewProps> = ({ pins }) => {
+export const MapView: React.FC<MapViewProps> = ({ locations, connections }) => {
   return (
     <MapContainer
       center={[51.505, -0.09]}
@@ -56,18 +51,20 @@ export const MapView: React.FC<MapViewProps> = ({ pins }) => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
 
-      {pins.map((pin) => (
-        <Marker key={pin.id} position={pin.position}>
-          <Tooltip permanent>{pin.label}</Tooltip>
+      {locations.map((loc) => (
+        <Marker key={loc.id} position={loc.position}>
+          <Tooltip permanent>{loc.label}</Tooltip>
         </Marker>
       ))}
 
-      {pins.slice(0, -1).map((pin, i) => {
-        const nextPin = pins[i + 1];
+      {connections.map((conn) => {
+        const locationA = locations.find((l) => l.id === conn.a);
+        const locationB = locations.find((l) => l.id === conn.b);
+        if (!locationA || !locationB) throw new Error("Unknown location");
         return (
           <ArrowPolyline
-            key={`arrow-${pin.id}-${nextPin.id}`}
-            positions={[pin.position, nextPin.position]}
+            key={`arrow-${connKey(conn)}`}
+            positions={[locationA.position, locationB.position]}
           />
         );
       })}

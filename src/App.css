@@ -5,7 +5,8 @@
 }
 
 .inputs {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 4rem;
   margin-bottom: 2rem;
 }
@@ -22,6 +23,6 @@
 
 .connections {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-columns: 2fr 2fr 1fr 1fr 1fr 1fr;
   gap: 0.5rem 1rem;
 }

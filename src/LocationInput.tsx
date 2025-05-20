@@ -1,30 +1,4 @@
-import type { LatLngTuple } from "leaflet";
-import { v4 as uuid } from "uuid";
-
-export interface Location {
-  id: string;
-  label: string;
-  position: LatLngTuple;
-}
-
-export const makeEmptyLocation = () => {
-  return {
-    id: uuid(),
-    label: "",
-    position: [NaN, NaN],
-  } as Location;
-};
-
-export const updateLocationInList = (
-  locations: Location[],
-  location: Location
-) => {
-  const index = locations.findIndex((l) => l.id === location.id);
-  if (index === -1) return locations;
-  const newLocations = [...locations];
-  newLocations[index] = location;
-  return newLocations;
-};
+import { type Location } from "./locations";
 
 interface LocationInputProps {
   location: Location;
@@ -41,6 +15,7 @@ export function LocationInput({
         type="text"
         value={location.label}
         onChange={(e) => updateLocation({ ...location, label: e.target.value })}
+        size={1}
       />
       <input
         type="text"
@@ -51,6 +26,7 @@ export function LocationInput({
             position: [Number(e.target.value), location.position[1]],
           })
         }
+        size={1}
       />
       <input
         type="text"
@@ -61,6 +37,7 @@ export function LocationInput({
             position: [location.position[0], Number(e.target.value)],
           })
         }
+        size={1}
       />
     </>
   );
