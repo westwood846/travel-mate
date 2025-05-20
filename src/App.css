@@ -2,5 +2,26 @@
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
-  text-align: center;
+}
+
+.inputs {
+  display: flex;
+  gap: 4rem;
+  margin-bottom: 2rem;
+}
+
+.inputs-label {
+  font-weight: bold;
+}
+
+.locations {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 0.5rem 1rem;
+}
+
+.connections {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 0.5rem 1rem;
 }
