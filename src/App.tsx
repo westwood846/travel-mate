@@ -80,6 +80,7 @@ function App() {
                 updateConnection={(connection) =>
                   setConnections(updateListById(connections, connection))
                 }
+                locations={locations}
               />
             </Fragment>
           ))}
