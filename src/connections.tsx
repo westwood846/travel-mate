@@ -1,4 +1,4 @@
-export const Modes = {
+export const modes = {
   WALKING: "Walking",
   BIKE: "Bike",
   CAR: "Car",
@@ -8,9 +8,10 @@ export const Modes = {
   SHIP: "Ship",
 } as const;
 
-export type Mode = keyof typeof Modes;
+export type Mode = keyof typeof modes;
 
 export interface Connection {
+  id: string;
   a: string;
   b: string;
   distance: number;
@@ -18,6 +19,3 @@ export interface Connection {
   duration_h: number;
   mode: Mode;
 }
-
-export const connKey = (connection: Connection) =>
-  connection.a + connection.b + connection.mode;

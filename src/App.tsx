@@ -4,9 +4,9 @@ import { MapView } from "./map";
 import { LocationInput } from "./LocationInput";
 import { type Location } from "./locations";
 import { Fragment, useState } from "react";
-import { updateListById, updateListByIdFn } from "./util";
+import { updateListById } from "./util";
 import { ConnectionInput } from "./ConnectionInput";
-import { connKey, type Connection } from "./connections";
+import { type Connection } from "./connections";
 
 const sampleLocations = [
   { id: "1", position: [51.505, -0.09] as LatLngTuple, label: "London" },
@@ -15,8 +15,33 @@ const sampleLocations = [
 ] as Location[];
 
 const sampleConnections = [
-  { a: "1", b: "2", distance: 500, price: 100, duration_h: 2, mode: "TRAIN" },
-  { a: "1", b: "3", distance: 1000, price: 200, duration_h: 5, mode: "PLANE" },
+  {
+    id: "1",
+    a: "1",
+    b: "2",
+    distance: 500,
+    price: 100,
+    duration_h: 2,
+    mode: "TRAIN",
+  },
+  {
+    id: "2",
+    a: "1",
+    b: "3",
+    distance: 1000,
+    price: 200,
+    duration_h: 5,
+    mode: "PLANE",
+  },
+  {
+    id: "3",
+    a: "2",
+    b: "3",
+    distance: 300,
+    price: 20,
+    duration_h: 1,
+    mode: "TRAIN",
+  },
 ] as Connection[];
 
 function App() {
@@ -49,13 +74,11 @@ function App() {
           <div className="inputs-label">Duration</div>
           <div className="inputs-label">Mode</div>
           {connections.map((connection) => (
-            <Fragment key={connKey(connection)}>
+            <Fragment key={connection.id}>
               <ConnectionInput
                 connection={connection}
                 updateConnection={(connection) =>
-                  setConnections(
-                    updateListByIdFn(connections, connection, connKey)
-                  )
+                  setConnections(updateListById(connections, connection))
                 }
               />
             </Fragment>

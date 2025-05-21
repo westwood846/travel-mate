@@ -1,39 +1,10 @@
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  Polyline,
-  Tooltip,
-} from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Tooltip } from "react-leaflet";
 
-import { useEffect, useRef } from "react";
-import L from "leaflet";
 import "leaflet-arrowheads";
 import type { Location } from "./locations";
-import { connKey, type Connection } from "./connections";
+import { modes, type Connection } from "./connections";
+import { LabeledLine } from "./LabeledLine";
 
-const ArrowPolyline = ({ positions }: { positions: L.LatLngExpression[] }) => {
-  const ref = useRef<L.Polyline | null>(null);
-
-  useEffect(() => {
-    if (ref.current && "arrowheads" in ref.current) {
-      ref.current.arrowheads({
-        frequency: "endonly",
-        size: "10px",
-        yawn: 60,
-        fill: true,
-      });
-    }
-  }, []);
-
-  return (
-    <Polyline
-      ref={ref}
-      positions={positions}
-      pathOptions={{ color: "red", weight: 3 }}
-    />
-  );
-};
 interface MapViewProps {
   locations: Location[];
   connections: Connection[];
@@ -62,9 +33,10 @@ export const MapView: React.FC<MapViewProps> = ({ locations, connections }) => {
         const locationB = locations.find((l) => l.id === conn.b);
         if (!locationA || !locationB) throw new Error("Unknown location");
         return (
-          <ArrowPolyline
-            key={`arrow-${connKey(conn)}`}
+          <LabeledLine
+            key={`arrow-${conn.id}`}
             positions={[locationA.position, locationB.position]}
+            label={modes[conn.mode]}
           />
         );
       })}

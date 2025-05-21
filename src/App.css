@@ -26,3 +26,14 @@
   grid-template-columns: 2fr 2fr 1fr 1fr 1fr 1fr;
   gap: 0.5rem 1rem;
 }
+
+.polyline-label {
+  background: white;
+  padding: 0 4px;
+  border: none;
+  border-radius: 8px;
+  color: black;
+  font-weight: bold;
+  font-size: 12px;
+  box-shadow: none;
+}

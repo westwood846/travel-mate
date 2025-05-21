@@ -1,4 +1,4 @@
-import type { Connection, Mode } from "./connections";
+import { modes, type Connection, type Mode } from "./connections";
 
 interface ConnectionInput {
   connection: Connection;
@@ -50,14 +50,18 @@ export function ConnectionInput({
         }
         size={1}
       />
-      <input
-        type="text"
+      <select
         value={connection.mode}
         onChange={(e) =>
           updateConnection({ ...connection, mode: e.target.value as Mode })
         }
-        size={1}
-      />
+      >
+        {Object.entries(modes).map(([mode, label]) => (
+          <option value={mode} key={mode}>
+            {label}
+          </option>
+        ))}
+      </select>
     </>
   );
 }
