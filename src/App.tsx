@@ -24,24 +24,24 @@ const sampleConnections = [
     duration_h: 2,
     mode: "TRAIN",
   },
-  {
-    id: "2",
-    a: "1",
-    b: "3",
-    distance: 1000,
-    price: 200,
-    duration_h: 5,
-    mode: "PLANE",
-  },
-  {
-    id: "3",
-    a: "2",
-    b: "3",
-    distance: 300,
-    price: 20,
-    duration_h: 1,
-    mode: "TRAIN",
-  },
+  // {
+  //   id: "2",
+  //   a: "1",
+  //   b: "3",
+  //   distance: 1000,
+  //   price: 200,
+  //   duration_h: 5,
+  //   mode: "PLANE",
+  // },
+  // {
+  //   id: "3",
+  //   a: "2",
+  //   b: "3",
+  //   distance: 300,
+  //   price: 20,
+  //   duration_h: 1,
+  //   mode: "TRAIN",
+  // },
 ] as Connection[];
 
 function App() {
@@ -80,12 +80,21 @@ function App() {
                 updateConnection={(connection) =>
                   setConnections(updateListById(connections, connection))
                 }
+                locations={locations}
               />
             </Fragment>
           ))}
         </div>
       </div>
       <MapView locations={locations} connections={connections} />
+      <div className="inputs">
+        <pre>
+          <code>{JSON.stringify(locations, null, 2)}</code>
+        </pre>
+        <pre>
+          <code>{JSON.stringify(connections, null, 2)}</code>
+        </pre>
+      </div>
     </>
   );
 }
