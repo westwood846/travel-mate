@@ -1,59 +1,68 @@
-import type { LatLngTuple } from "leaflet";
 import "./App.css";
 import { MapView } from "./map";
 import { LocationInput } from "./LocationInput";
-import { isValidLocation, makeEmptyLocation, type Location } from "./locations";
+import {
+  makeInputLocation,
+  validateLocation,
+  type InputLocation,
+  type Location,
+} from "./locations";
 import { Fragment, useState } from "react";
 import { updateListById } from "./util";
 import { ConnectionInput } from "./ConnectionInput";
 import {
-  isValidConnection,
-  makeEmptyConnection,
+  makeInputConnection,
+  validateConnection,
   type Connection,
+  type InputConnection,
 } from "./connections";
 
 const sampleLocations = [
-  { id: "1", position: [51.505, -0.09] as LatLngTuple, label: "London" },
-  { id: "2", position: [48.8566, 2.3522] as LatLngTuple, label: "Paris" },
-  { id: "3", position: [52.52, 13.405] as LatLngTuple, label: "Berlin" },
-] as Location[];
+  { id: "1", lat: "51.505", lng: "-0.09", label: "London" },
+  { id: "2", lat: "48.8566", lng: "2.3522", label: "Paris" },
+  { id: "3", lat: "52.52", lng: "13.405", label: "Berlin" },
+] as InputLocation[];
 
 const sampleConnections = [
   {
     id: "1",
     a: "1",
     b: "2",
-    distance: 500,
-    price: 100,
-    duration_h: 2,
+    distance: "500",
+    price: "100",
+    duration_h: "2",
     mode: "TRAIN",
   },
   {
     id: "2",
     a: "1",
     b: "3",
-    distance: 1000,
-    price: 200,
-    duration_h: 5,
+    distance: "1000",
+    price: "200",
+    duration_h: "5",
     mode: "PLANE",
   },
   {
     id: "3",
     a: "2",
     b: "3",
-    distance: 300,
-    price: 20,
-    duration_h: 1,
+    distance: "300",
+    price: "20",
+    duration_h: "1",
     mode: "TRAIN",
   },
-] as Connection[];
+] as InputConnection[];
 
 function App() {
   const [locations, setLocations] = useState(sampleLocations);
   const [connections, setConnections] = useState(sampleConnections);
 
-  const validLocations = locations.filter(isValidLocation);
-  const validConnections = connections.filter(isValidConnection);
+  const validLocations = locations
+    .map(validateLocation)
+    .filter((x) => x) as Location[];
+  const validConnections = connections
+    .map((c) => validateConnection(c, validLocations))
+    .filter((x) => x) as Connection[];
 
   return (
     <>
@@ -73,7 +82,7 @@ function App() {
             </Fragment>
           ))}
           <button
-            onClick={() => setLocations([...locations, makeEmptyLocation()])}
+            onClick={() => setLocations([...locations, makeInputLocation()])}
           >
             Add location
           </button>
@@ -92,13 +101,13 @@ function App() {
                 updateConnection={(connection) =>
                   setConnections(updateListById(connections, connection))
                 }
-                locations={locations}
+                locations={validLocations}
               />
             </Fragment>
           ))}
           <button
             onClick={() =>
-              setConnections([...connections, makeEmptyConnection()])
+              setConnections([...connections, makeInputConnection()])
             }
           >
             Add connection

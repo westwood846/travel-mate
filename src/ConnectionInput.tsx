@@ -1,9 +1,9 @@
-import { modes, type Connection, type Mode } from "./connections";
+import { modes, type InputConnection } from "./connections";
 import type { Location } from "./locations";
 
 interface ConnectionInput {
-  connection: Connection;
-  updateConnection: (connection: Connection) => void;
+  connection: InputConnection;
+  updateConnection: (connection: InputConnection) => void;
   locations: Location[];
 }
 
@@ -19,6 +19,7 @@ export function ConnectionInput({
         onChange={(e) => updateConnection({ ...connection, a: e.target.value })}
         size={1}
       >
+        <option value="" disabled hidden></option>
         {locations.map((location) => (
           <option value={location.id} key={location.id}>
             {location.label}
@@ -27,9 +28,10 @@ export function ConnectionInput({
       </select>
       <select
         value={connection.b}
-        onChange={(e) => updateConnection({ ...connection, a: e.target.value })}
+        onChange={(e) => updateConnection({ ...connection, b: e.target.value })}
         size={1}
       >
+        <option value="" disabled hidden></option>
         {locations.map((location) => (
           <option value={location.id} key={location.id}>
             {location.label}
@@ -40,7 +42,7 @@ export function ConnectionInput({
         type="text"
         value={connection.distance}
         onChange={(e) =>
-          updateConnection({ ...connection, distance: Number(e.target.value) })
+          updateConnection({ ...connection, distance: e.target.value })
         }
         size={1}
       />
@@ -48,7 +50,7 @@ export function ConnectionInput({
         type="text"
         value={connection.price}
         onChange={(e) =>
-          updateConnection({ ...connection, price: Number(e.target.value) })
+          updateConnection({ ...connection, price: e.target.value })
         }
         size={1}
       />
@@ -58,7 +60,7 @@ export function ConnectionInput({
         onChange={(e) =>
           updateConnection({
             ...connection,
-            duration_h: Number(e.target.value),
+            duration_h: e.target.value,
           })
         }
         size={1}
@@ -66,10 +68,11 @@ export function ConnectionInput({
       <select
         value={connection.mode}
         onChange={(e) =>
-          updateConnection({ ...connection, mode: e.target.value as Mode })
+          updateConnection({ ...connection, mode: e.target.value })
         }
         size={1}
       >
+        <option value="" disabled hidden></option>
         {Object.entries(modes).map(([mode, label]) => (
           <option value={mode} key={mode}>
             {label}

@@ -7,16 +7,28 @@ export interface Location {
   position: LatLngTuple;
 }
 
-export const makeEmptyLocation = () => {
+export interface InputLocation {
+  id: string;
+  label: string;
+  lat: string;
+  lng: string;
+}
+
+export const makeInputLocation = () => {
   return {
     id: uuid(),
     label: "",
-    position: [NaN, NaN],
-  } as Location;
+    lat: "",
+    lng: "",
+  } as InputLocation;
 };
 
-export const isValidLocation = (location: Location) => {
-  if (Number.isNaN(location.position[0])) return false;
-  if (Number.isNaN(location.position[1])) return false;
-  return true;
+export const validateLocation = (input: InputLocation) => {
+  if (input.lat === "" || isNaN(Number(input.lat))) return null;
+  if (input.lng === "" || isNaN(Number(input.lng))) return null;
+  return {
+    id: input.id,
+    label: input.label,
+    position: [Number(input.lat), Number(input.lng)],
+  } as Location;
 };

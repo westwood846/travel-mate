@@ -19,6 +19,7 @@
   display: grid;
   grid-template-columns: 2fr 1fr 1fr;
   gap: 0.5rem 1rem;
+  align-content: start;
 }
 
 .connections {

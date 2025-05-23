@@ -1,8 +1,8 @@
-import { type Location } from "./locations";
+import { type InputLocation } from "./locations";
 
 interface LocationInputProps {
-  location: Location;
-  updateLocation: (location: Location) => void;
+  location: InputLocation;
+  updateLocation: (location: InputLocation) => void;
 }
 
 export function LocationInput({
@@ -19,22 +19,22 @@ export function LocationInput({
       />
       <input
         type="text"
-        value={location.position[0]}
+        value={location.lat}
         onChange={(e) =>
           updateLocation({
             ...location,
-            position: [Number(e.target.value), location.position[1]],
+            lat: e.target.value,
           })
         }
         size={1}
       />
       <input
         type="text"
-        value={location.position[1]}
+        value={location.lng}
         onChange={(e) =>
           updateLocation({
             ...location,
-            position: [location.position[0], Number(e.target.value)],
+            lng: e.target.value,
           })
         }
         size={1}
