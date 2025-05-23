@@ -29,12 +29,19 @@
 }
 
 .polyline-label {
+  display: inline-block;
+  padding: 0px 4px;
   background: white;
-  padding: 0 4px;
-  border: none;
-  border-radius: 8px;
-  color: black;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #333;
+  white-space: nowrap;
+  transform: translate(-50%, -50%); /* center over anchor */
+  position: relative;
+  text-align: center;
+}
+
+.polyline-label :first-child {
   font-weight: bold;
-  font-size: 12px;
-  box-shadow: none;
 }

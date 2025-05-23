@@ -36,7 +36,12 @@ export const MapView: React.FC<MapViewProps> = ({ locations, connections }) => {
           <LabeledLine
             key={`arrow-${conn.id}`}
             positions={[locationA.position, locationB.position]}
-            label={modes[conn.mode]}
+            labels={[
+              modes[conn.mode],
+              `${conn.distance || "?"} km, ${conn.duration_h || "?"} hrs, $${
+                conn.price || "?"
+              }`,
+            ]}
           />
         );
       })}

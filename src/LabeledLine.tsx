@@ -1,34 +1,55 @@
-import { useEffect, useRef } from "react";
 import { Polyline } from "react-leaflet";
-import L, { Layer, type LatLngExpression } from "leaflet";
+import L, { type LatLngExpression } from "leaflet";
+
+import { Marker } from "react-leaflet";
+
+const midpoint = (
+  p1: LatLngExpression,
+  p2: LatLngExpression
+): LatLngExpression => {
+  const lat = ((p1 as [number, number])[0] + (p2 as [number, number])[0]) / 2;
+  const lng = ((p1 as [number, number])[1] + (p2 as [number, number])[1]) / 2;
+  return [lat, lng];
+};
+
+export const LabelMarker = ({
+  labels,
+  position,
+}: {
+  labels: string[];
+  position: LatLngExpression;
+}) => (
+  <Marker
+    position={position}
+    icon={L.divIcon({
+      html: `<div class="polyline-label">${labels
+        .map((label) => `<div>${label}</div>`)
+        .join("")}</div>`,
+      className: "",
+      iconAnchor: [0, 0],
+    })}
+  />
+);
 
 interface LabeledLineProps {
   positions: LatLngExpression[];
-  label: Parameters<typeof Layer.prototype.bindTooltip>[0];
+  labels: string[];
 }
 
 export const LabeledLine: React.FC<LabeledLineProps> = ({
   positions,
-  label,
+  labels,
 }) => {
-  const polylineRef = useRef<L.Polyline>(null);
-
-  useEffect(() => {
-    if (polylineRef.current) {
-      polylineRef.current.bindTooltip(label, {
-        permanent: true,
-        direction: "center",
-        className: "polyline-label",
-        offset: L.point(0, 0),
-      });
-    }
-  }, [label]);
-
   return (
-    <Polyline
-      ref={polylineRef}
-      positions={positions}
-      pathOptions={{ color: "blue", weight: 3 }}
-    />
+    <>
+      <Polyline
+        positions={positions}
+        pathOptions={{ color: "blue", weight: 3 }}
+      />
+      <LabelMarker
+        labels={labels}
+        position={midpoint(positions[0], positions[1])}
+      />
+    </>
   );
 };
