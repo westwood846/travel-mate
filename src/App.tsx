@@ -2,11 +2,15 @@ import type { LatLngTuple } from "leaflet";
 import "./App.css";
 import { MapView } from "./map";
 import { LocationInput } from "./LocationInput";
-import { type Location } from "./locations";
+import { isValidLocation, makeEmptyLocation, type Location } from "./locations";
 import { Fragment, useState } from "react";
 import { updateListById } from "./util";
 import { ConnectionInput } from "./ConnectionInput";
-import { type Connection } from "./connections";
+import {
+  isValidConnection,
+  makeEmptyConnection,
+  type Connection,
+} from "./connections";
 
 const sampleLocations = [
   { id: "1", position: [51.505, -0.09] as LatLngTuple, label: "London" },
@@ -48,6 +52,9 @@ function App() {
   const [locations, setLocations] = useState(sampleLocations);
   const [connections, setConnections] = useState(sampleConnections);
 
+  const validLocations = locations.filter(isValidLocation);
+  const validConnections = connections.filter(isValidConnection);
+
   return (
     <>
       <div className="inputs">
@@ -65,6 +72,11 @@ function App() {
               />
             </Fragment>
           ))}
+          <button
+            onClick={() => setLocations([...locations, makeEmptyLocation()])}
+          >
+            Add location
+          </button>
         </div>
         <div className="connections">
           <div className="inputs-label">a</div>
@@ -84,9 +96,16 @@ function App() {
               />
             </Fragment>
           ))}
+          <button
+            onClick={() =>
+              setConnections([...connections, makeEmptyConnection()])
+            }
+          >
+            Add connection
+          </button>
         </div>
       </div>
-      <MapView locations={locations} connections={connections} />
+      <MapView locations={validLocations} connections={validConnections} />
     </>
   );
 }

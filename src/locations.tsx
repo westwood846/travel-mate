@@ -14,3 +14,9 @@ export const makeEmptyLocation = () => {
     position: [NaN, NaN],
   } as Location;
 };
+
+export const isValidLocation = (location: Location) => {
+  if (Number.isNaN(location.position[0])) return false;
+  if (Number.isNaN(location.position[1])) return false;
+  return true;
+};
